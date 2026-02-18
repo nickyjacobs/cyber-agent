@@ -1,12 +1,21 @@
 // src/workflows/network-analysis.ts
 import { CyberAgent } from '../core/agent';
 import { TsharkAnalyzer } from '../tools/tshark-analyzer';
+import { isToolAvailable } from '../utils/shell';
 import type { ScanResult, Severity } from '../core/types';
 import ora from 'ora';
 
 export async function runNetworkAnalysis(agent: CyberAgent, pcapFile: string): Promise<ScanResult[]> {
   console.log(`\n📡 = PCAP ANALYSE: ${pcapFile} =\n`);
   const allResults: ScanResult[] = [];
+
+  // --- Stap 1: Check beschikbare tools ---
+  const requiredTools = ['tshark', 'capinfos', 'tcpdump'];
+  console.log('📦 Benodigde tools:');
+  for (const tool of requiredTools) {
+    console.log(`  ${isToolAvailable(tool) ? '✅' : '❌'} ${tool}`);
+  }
+  console.log();
 
   const spinner = ora('tshark: PCAP bestand analyseren...').start();
   const analyzer = new TsharkAnalyzer();

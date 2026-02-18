@@ -1,12 +1,21 @@
 // src/workflows/osint-gather.ts
 import { CyberAgent } from '../core/agent';
 import { OsintTools } from '../tools/osint-tools';
+import { isToolAvailable } from '../utils/shell';
 import type { ScanResult, Severity } from '../core/types';
 import ora from 'ora';
 
 export async function runOsintGather(agent: CyberAgent, domain: string): Promise<ScanResult[]> {
   console.log(`\n🔍 = OSINT RECONNAISSANCE: ${domain} =\n`);
   const allResults: ScanResult[] = [];
+
+  // --- Stap 1: Check beschikbare tools ---
+  const requiredTools = ['whois', 'dig', 'dnsrecon', 'sublist3r', 'theHarvester'];
+  console.log('📦 Benodigde tools:');
+  for (const tool of requiredTools) {
+    console.log(`  ${isToolAvailable(tool) ? '✅' : '❌'} ${tool}`);
+  }
+  console.log();
 
   const spinner = ora(`OSINT tools draaien voor ${domain}...`).start();
   const osint = new OsintTools();

@@ -1,12 +1,21 @@
 // src/workflows/hardening.ts
 import { CyberAgent } from '../core/agent';
 import { SystemChecker } from '../tools/system-checker';
+import { isToolAvailable } from '../utils/shell';
 import type { ScanResult, Severity } from '../core/types';
 import ora from 'ora';
 
 export async function runHardening(agent: CyberAgent): Promise<ScanResult[]> {
   console.log('\n🛡️  = HARDENING SCAN (Kali Linux) =\n');
   const allResults: ScanResult[] = [];
+
+  // --- Stap 1: Check beschikbare tools ---
+  const requiredTools = ['ss', 'ufw', 'auditd', 'lynis'];
+  console.log('📦 Benodigde tools:');
+  for (const tool of requiredTools) {
+    console.log(`  ${isToolAvailable(tool) ? '✅' : '❌'} ${tool}`);
+  }
+  console.log();
 
   const spinner = ora('Systeemconfiguratie analyseren...').start();
   const checker = new SystemChecker();

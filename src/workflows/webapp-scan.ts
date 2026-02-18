@@ -10,6 +10,14 @@ export async function runWebappScan(agent: CyberAgent, target: string): Promise<
   console.log(`\n🌐 = WEB APP SCAN: ${target} =\n`);
   const allResults: ScanResult[] = [];
 
+  // --- Stap 1: Check beschikbare tools ---
+  const requiredTools = ['nikto', 'whatweb', 'sslscan', 'gobuster', 'wapiti'];
+  console.log('📦 Benodigde tools:');
+  for (const tool of requiredTools) {
+    console.log(`  ${isToolAvailable(tool) ? '✅' : '❌'} ${tool}`);
+  }
+  console.log();
+
   // Nikto
   const niktoSpinner = ora('Nikto: web vulnerability scan...').start();
   const nikto = new NiktoScanner();
