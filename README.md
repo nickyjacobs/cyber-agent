@@ -11,14 +11,14 @@ Je stelt een vraag of geeft een opdracht. De agent kiest zelf de juiste Kali too
 
 **Zes gespecialiseerde modi:**
 
-| | Modus | Beschrijving |
-|---|---|---|
-| 🤖 | `general` | Algemene security assistent |
-| ⚔️ | `redteam` | Denkt als aanvaller, identificeert aanvalsvectoren |
-| 🛡️ | `blueteam` | Defensief, hardening en detectie |
-| 🕵️ | `osint` | Open source intelligence gathering |
-| 🌐 | `webpentest` | Web applicatie penetratietesten |
-| 📜 | `smartcontract` | Smart contract security audit |
+| Modus | Beschrijving |
+|---|---|
+| 🤖 `general` | Algemene security assistent |
+| ⚔️ `redteam` | Denkt als aanvaller, identificeert aanvalsvectoren |
+| 🛡️ `blueteam` | Defensief, hardening en detectie |
+| 🕵️ `osint` | Open source intelligence gathering |
+| 🌐 `webpentest` | Web applicatie penetratietesten |
+| 📜 `smartcontract` | Smart contract security audit |
 
 **Beschikbare workflows:**
 
