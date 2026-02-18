@@ -3,6 +3,8 @@
 AI-powered cybersecurity agent gebouwd op Kali Linux, aangedreven door Claude via de Agent SDK.
 De agent kan Kali tools zelfstandig aansturen, output interpreteren en bevindingen rapporteren in het Nederlands.
 
+<img width="778" height="583" alt="image" src="https://github.com/user-attachments/assets/f9c58164-48e4-4d11-9d22-6117b7510a0b" />
+
 ---
 
 ## Wat doet het?
@@ -13,12 +15,12 @@ Je stelt een vraag of geeft een opdracht. De agent kiest zelf de juiste Kali too
 
 | Modus | Beschrijving |
 |---|---|
-| 🤖 `general` | Algemene security assistent |
-| ⚔️ `redteam` | Denkt als aanvaller, identificeert aanvalsvectoren |
-| 🛡️ `blueteam` | Defensief, hardening en detectie |
-| 🕵️ `osint` | Open source intelligence gathering |
-| 🌐 `webpentest` | Web applicatie penetratietesten |
-| 📜 `smartcontract` | Smart contract security audit |
+| 🤖  `general` | Algemene security assistent |
+| ⚔️  `redteam` | Denkt als aanvaller, identificeert aanvalsvectoren |
+| 🛡️  `blueteam` | Defensief, hardening en detectie |
+| 🕵️  `osint` | Open source intelligence gathering |
+| 🌐  `webpentest` | Web applicatie penetratietesten |
+| 📜  `smartcontract` | Smart contract security audit |
 
 **Beschikbare workflows:**
 
