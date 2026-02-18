@@ -41,6 +41,59 @@ export async function runWebappScan(agent: CyberAgent, target: string): Promise<
     allResults.push(...sslResults);
   }
 
+  // Gobuster — directory en bestand bruteforce
+  if (isToolAvailable('gobuster')) {
+    const gobusterSpinner = ora('Gobuster: verborgen directories zoeken...').start();
+    const wordlist = '/usr/share/wordlists/dirb/common.txt';
+    const gobuster = runCommand(
+      `gobuster dir -u ${target} -w ${wordlist} -q --no-color 2>/dev/null | head -40`,
+      { timeout: 120_000, silent: true }
+    );
+    const found = gobuster.stdout.split('\n').filter(l => l.includes('Status:'));
+    if (found.length > 0) {
+      allResults.push({
+        tool: 'gobuster',
+        severity: 'low',
+        title: `Gobuster: ${found.length} directories/bestanden gevonden`,
+        description: found.join('\n'),
+        recommendation: 'Controleer of gevonden paden publiek toegankelijk mogen zijn.',
+      });
+    }
+    gobusterSpinner.succeed(`Gobuster: ${found.length} paden gevonden`);
+  }
+
+  // Wapiti — geautomatiseerde webapp vulnerability scan
+  if (isToolAvailable('wapiti')) {
+    const wapitiSpinner = ora('Wapiti: webapp vulnerability scan (XSS, SQLi, ...)...').start();
+    const wapiti = runCommand(
+      `wapiti -u ${target} --scope page -f txt -o /dev/stdout --no-bugreport 2>/dev/null | tail -50`,
+      { timeout: 300_000, silent: true }
+    );
+    if (wapiti.stdout.trim()) {
+      allResults.push({
+        tool: 'wapiti',
+        severity: 'info',
+        title: `Wapiti scan: ${target}`,
+        description: 'Geautomatiseerde webapp scan compleet',
+        raw: wapiti.stdout,
+      });
+
+      // Detecteer gevonden kwetsbaarheden in wapiti output
+      const vulnLines = wapiti.stdout
+        .split('\n')
+        .filter(l => /(SQL|XSS|CRLF|SSRF|XXE|redirect|traversal)/i.test(l));
+      for (const line of vulnLines) {
+        allResults.push({
+          tool: 'wapiti',
+          severity: 'high',
+          title: `Wapiti bevinding: ${line.trim().slice(0, 80)}`,
+          description: line.trim(),
+        });
+      }
+    }
+    wapitiSpinner.succeed('Wapiti: compleet');
+  }
+
   // Toon bevindingen
   console.log('\n📋 Bevindingen:\n');
   const icons: Record<Severity, string> = {

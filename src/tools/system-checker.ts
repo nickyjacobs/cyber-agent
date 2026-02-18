@@ -88,6 +88,27 @@ export class SystemChecker implements SecurityTool {
       });
     }
 
+    // auditd — audit daemon status en regels
+    const auditdStatus = runCommand('systemctl is-active auditd 2>/dev/null', { silent: true });
+    if (auditdStatus.stdout.trim() !== 'active') {
+      results.push({
+        tool: this.name,
+        severity: 'medium',
+        title: 'auditd niet actief',
+        description: 'De Linux Audit Daemon draait niet. Systeemgebeurtenissen worden niet gelogd.',
+        recommendation: 'Installeer en activeer met: sudo apt install auditd && sudo systemctl enable --now auditd',
+      });
+    } else {
+      const auditRules = runCommand('auditctl -l 2>/dev/null', { silent: true, sudo: true });
+      const ruleCount = auditRules.stdout.split('\n').filter(l => l.trim() && !l.includes('No rules')).length;
+      results.push({
+        tool: this.name,
+        severity: ruleCount === 0 ? 'low' : 'info',
+        title: `auditd actief (${ruleCount} regels geconfigureerd)`,
+        description: auditRules.stdout || 'Geen audit regels gevonden',
+      });
+    }
+
     // Lynis (indien aanwezig)
     if (isToolAvailable('lynis')) {
       const lynis = runCommand(

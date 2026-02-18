@@ -4,7 +4,7 @@ import { SecurityTool, ScanResult } from '../core/types';
 
 export class TsharkAnalyzer implements SecurityTool {
   name = 'tshark-analyzer';
-  description = 'PCAP analyse (tshark) voor netwerkverkeer inspectie';
+  description = 'PCAP analyse (tshark/tcpdump) voor netwerkverkeer inspectie';
 
   async run(args: Record<string, unknown> = {}): Promise<ScanResult[]> {
     if (!isToolAvailable('tshark')) {
@@ -16,14 +16,36 @@ export class TsharkAnalyzer implements SecurityTool {
       }];
     }
 
-    const pcapFile = args.pcapFile as string;
+    let pcapFile = args.pcapFile as string;
+
+    // Geen pcap opgegeven → tcpdump gebruiken voor live capture
     if (!pcapFile) {
-      return [{
-        tool: this.name,
-        severity: 'medium',
-        title: 'Geen PCAP bestand opgegeven',
-        description: 'Geef een pcap bestand op via args.pcapFile',
-      }];
+      if (!isToolAvailable('tcpdump')) {
+        return [{
+          tool: this.name,
+          severity: 'medium',
+          title: 'Geen PCAP bestand opgegeven en tcpdump niet gevonden',
+          description: 'Geef een pcap bestand op via args.pcapFile, of installeer tcpdump voor live capture.',
+        }];
+      }
+
+      const iface = (args.interface as string) || 'any';
+      const duration = (args.duration as number) || 30;
+      pcapFile = `/tmp/cyberagent-capture-${Date.now()}.pcap`;
+
+      const capture = runCommand(
+        `tcpdump -i ${iface} -w "${pcapFile}" -G ${duration} -W 1 2>/dev/null`,
+        { timeout: (duration + 5) * 1000, silent: true, sudo: true }
+      );
+
+      if (capture.exitCode !== 0 && !capture.stdout) {
+        return [{
+          tool: this.name,
+          severity: 'medium',
+          title: 'Live capture mislukt',
+          description: capture.stderr || 'tcpdump kon geen verkeer vastleggen.',
+        }];
+      }
     }
 
     const results: ScanResult[] = [];

@@ -76,6 +76,52 @@ export class OsintTools implements SecurityTool {
       });
     }
 
+    // sublist3r — subdomain enumeration
+    if (isToolAvailable('sublist3r')) {
+      const sublist3r = runCommand(`sublist3r -d ${domain} -o /dev/stdout 2>/dev/null`, {
+        timeout: 120_000,
+        silent: true,
+      });
+      const subdomains = sublist3r.stdout.split('\n').filter(l => l.trim() && l.includes('.'));
+      results.push({
+        tool: this.name,
+        severity: subdomains.length > 0 ? 'low' : 'info',
+        title: `Sublist3r: ${subdomains.length} subdomeinen gevonden voor ${domain}`,
+        description: subdomains.join('\n') || 'Geen subdomeinen gevonden',
+        raw: sublist3r.stdout,
+      });
+    }
+
+    // theHarvester — email, hosts en namen verzamelen
+    if (isToolAvailable('theHarvester')) {
+      const harvester = runCommand(
+        `theHarvester -d ${domain} -b duckduckgo,bing -l 100 2>/dev/null`,
+        { timeout: 120_000, silent: true }
+      );
+      results.push({
+        tool: this.name,
+        severity: 'info',
+        title: `theHarvester: open source intelligence voor ${domain}`,
+        description: 'Emails, hosts en namen verzameld via publieke bronnen',
+        raw: harvester.stdout,
+      });
+
+      // Emails zijn een apart aandachtspunt
+      const emails = harvester.stdout
+        .split('\n')
+        .filter(l => l.includes('@') && l.includes(domain));
+      if (emails.length > 0) {
+        results.push({
+          tool: this.name,
+          severity: 'low',
+          title: `${emails.length} emailadressen gevonden voor ${domain}`,
+          description: emails.join('\n'),
+          recommendation: 'Controleer of deze adressen niet gebruikt kunnen worden voor phishing of credential stuffing.',
+          mitreAttackId: 'T1589.002',
+        });
+      }
+    }
+
     return results;
   }
 }
