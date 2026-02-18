@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Cyber Agent — start script
+# Gebruik: ./start [mode]
+#   mode: general | redteam | blueteam | osint | webpentest | smartcontract
+
+cd "$(dirname "$0")"
+
+export PATH="/home/vector/.local/bin:$PATH"
+unset CLAUDECODE
+
+exec node_modules/.bin/tsx src/cli/index.ts "$@"
