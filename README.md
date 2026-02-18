@@ -1,9 +1,9 @@
 # Cyber Agent
 
+<img width="778" height="583" alt="image" src="https://github.com/user-attachments/assets/f9c58164-48e4-4d11-9d22-6117b7510a0b" />
+
 AI-powered cybersecurity agent gebouwd op Kali Linux, aangedreven door Claude via de Agent SDK.
 De agent kan Kali tools zelfstandig aansturen, output interpreteren en bevindingen rapporteren in het Nederlands.
-
-<img width="778" height="583" alt="image" src="https://github.com/user-attachments/assets/f9c58164-48e4-4d11-9d22-6117b7510a0b" />
 
 ---
 
