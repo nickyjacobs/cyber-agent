@@ -1,6 +1,75 @@
+# ─── Dependencies ────────────────────────────────────────────────
 node_modules/
+.pnp
+.pnp.js
+
+# ─── Build output ────────────────────────────────────────────────
 dist/
+build/
+out/
+*.js.map
+*.d.ts
+
+# ─── Omgeving & secrets ──────────────────────────────────────────
+# NOOIT API keys, wachtwoorden of tokens committen
 .env
-*.log
+.env.*
+.env.local
+.env.development
+.env.production
+.env.test
+*.key
+*.pem
+*.p12
+*.pfx
+secrets/
+credentials/
+
+# ─── Claude Code lokale instellingen ─────────────────────────────
+# Volledige .claude/ map: lokale config, systeem prompts, skills
+.claude/
+
+# ─── Scan resultaten (bevatten gevoelige data over doelwitten) ────
 scan-results/
+*.nmap
+*.gnmap
+*.xml
+*.json.scan
+reports/
+output/
+
+# ─── Log bestanden ───────────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ─── OS bestanden ────────────────────────────────────────────────
 .DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ─── Editor / IDE ────────────────────────────────────────────────
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+
+# ─── TypeScript cache ────────────────────────────────────────────
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# ─── Tijdelijke bestanden ────────────────────────────────────────
+*.tmp
+*.temp
+.cache/
+tmp/
+temp/
