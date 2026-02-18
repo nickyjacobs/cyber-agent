@@ -11,14 +11,14 @@ Je stelt een vraag of geeft een opdracht. De agent kiest zelf de juiste Kali too
 
 **Zes gespecialiseerde modi:**
 
-| Modus | Beschrijving |
-|---|---|
-| `general` | Algemene security assistent |
-| `redteam` | Denkt als aanvaller, identificeert aanvalsvectoren |
-| `blueteam` | Defensief, hardening en detectie |
-| `osint` | Open source intelligence gathering |
-| `webpentest` | Web applicatie penetratietesten |
-| `smartcontract` | Smart contract security audit |
+| | Modus | Beschrijving |
+|---|---|---|
+| 🤖 | `general` | Algemene security assistent |
+| ⚔️ | `redteam` | Denkt als aanvaller, identificeert aanvalsvectoren |
+| 🛡️ | `blueteam` | Defensief, hardening en detectie |
+| 🕵️ | `osint` | Open source intelligence gathering |
+| 🌐 | `webpentest` | Web applicatie penetratietesten |
+| 📜 | `smartcontract` | Smart contract security audit |
 
 **Beschikbare workflows:**
 
@@ -68,6 +68,9 @@ npm install
 
 In de interactieve CLI kun je daarna gewoon typen wat je wilt weten of doen.
 
+Zie [docs/CLI.md](docs/CLI.md) voor een volledig overzicht van alle commando's, argumenten en voorbeelden.
+Zie [docs/WORKFLOWS.md](docs/WORKFLOWS.md) voor uitgebreide uitleg per workflow.
+
 ---
 
 ## Projectstructuur
@@ -100,3 +103,11 @@ src/
 - **@anthropic-ai/claude-agent-sdk** — Claude als redenerende kern
 - **Kali Linux native tools** — geen npm wrappers voor security tools
 - **inquirer** + **chalk** + **ora** — CLI interface
+
+---
+
+## Documentatie
+
+- [CLI Command Reference](docs/CLI.md) — alle commando's en voorbeelden
+- [Workflows](docs/WORKFLOWS.md) — uitgebreide uitleg per workflow
+- [Changelog](CHANGELOG.md) — versiegeschiedenis
